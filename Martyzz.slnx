@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Martyzz.Domain/Martyzz.Domain.csproj" Id="86f4de3d-55c2-4557-9bc2-bc74bb5fe2ac" />
+  <Project Path="Martyzz.Infrastructure/Martyzz.Infrastructure.csproj" Id="6b24f203-188d-4dca-91a1-9c143f2f8191" />
+  <Project Path="Martyzz.Services/Martyzz.Services.csproj" Id="3f6c29c6-3491-471d-8a42-281ce9d3436b" />
+  <Project Path="Martyzz/Martyzz.csproj" />
+  <Project Path="Playground/Playground.csproj" />
+</Solution>

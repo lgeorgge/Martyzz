@@ -1,0 +1,6 @@
+@Martyzz_HostAddress = http://localhost:5140
+
+GET {{Martyzz_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
