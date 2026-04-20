@@ -1,5 +1,9 @@
+using Martyzz.Domain.Repo.Interfaces;
 using Martyzz.Infrastructure.Data;
+using Martyzz.Infrastructure.Repositories;
+using Martyzz.Mappings;
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +13,9 @@ builder.Services.AddControllers();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddAutoMapper(A => A.AddProfile(new MappingProfile()));
 
 builder.Services.AddDbContext<StoreDbContext>(options =>
 {
@@ -26,6 +33,7 @@ var context = servicesProvider.GetRequiredService<StoreDbContext>(); // Ask the 
 // add the logger as well with the same way
 
 var loggerFactory = servicesProvider.GetRequiredService<ILoggerFactory>();
+
 var logger = loggerFactory.CreateLogger<Program>();
 
 try
@@ -39,11 +47,13 @@ catch (Exception ex)
     logger.LogError(ex, "An error occurred while applying database migrations.");
 }
 
+// Add mapper services
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    //app.MapScalarApiReference();
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();

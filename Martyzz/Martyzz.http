@@ -3,4 +3,5 @@
 GET {{Martyzz_HostAddress}}/weatherforecast/
 Accept: application/json
 
-###
+
+Get {{Martyzz_HostAddress}}/Product
