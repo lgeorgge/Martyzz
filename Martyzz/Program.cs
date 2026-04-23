@@ -2,6 +2,7 @@ using Martyzz.Domain.Repo.Interfaces;
 using Martyzz.Infrastructure.Data;
 using Martyzz.Infrastructure.Repositories;
 using Martyzz.Mappings;
+using Martyzz.Mappings.Resolvers;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -15,6 +16,10 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+builder.Services.AddTransient<ProductImageUrlResolver>();
+
+// Mappers
 builder.Services.AddAutoMapper(A => A.AddProfile(new MappingProfile()));
 
 builder.Services.AddDbContext<StoreDbContext>(options =>
@@ -55,6 +60,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
+
+app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 

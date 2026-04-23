@@ -4,6 +4,7 @@ using Martyzz.Domain.Models;
 using Martyzz.Domain.Repo.Interfaces;
 using Martyzz.Domain.Specifications.ProductSpecs;
 using Martyzz.Dtos;
+using Martyzz.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Martyzz.Controllers
@@ -46,7 +47,7 @@ namespace Martyzz.Controllers
             var specs = new ProductSpecs(id);
             var product = await _repo.Get(specs);
             if (product == null)
-                return NotFound();
+                return NotFound(new ApiException(404));
 
             return Ok(_mapper.Map<ProductDto>(product));
         }

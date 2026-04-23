@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <Folder Include="Repo.Interfaces\" />
+    <Folder Include="Specifications\BrandSpecs\" />
+    <Folder Include="Specifications\CategorySpecs\" />
   </ItemGroup>
 
 </Project>
