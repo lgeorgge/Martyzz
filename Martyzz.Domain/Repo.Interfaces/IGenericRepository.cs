@@ -7,5 +7,5 @@ public interface IGenericRepository<T>
     where T : class
 {
     Task<T?> Get(ISpecifications<T>? spec);
-    Task<PagedResult<T>> GetAll(Pagination pagination, ISpecifications<T>? spec);
+    Task<PaginatedResult<T>> GetAll(ISpecifications<T>? spec);
 }

@@ -18,22 +18,17 @@ namespace Martyzz.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Brand>>> GetBrands(int? page, int? pageSize)
         {
-            page = (page < 1 || page == null) ? 1 : page;
-            pageSize = (pageSize < 1 || pageSize == null || pageSize > 100) ? 10 : pageSize;
-
-            Pagination pagination = new(page.Value, pageSize.Value);
-
-            ISpecifications<Brand> specs = new BrandSpecs(null);
-            var brandsResult = await _repo.GetAll(pagination, specs);
+            ISpecifications<Brand> specs = new BrandSpecs(null, page, pageSize);
+            var brandsResult = await _repo.GetAll(specs);
 
             var brandsDto = _mapper.Map<List<BrandDto>>(brandsResult.Items);
 
             GetAllResult<BrandDto> result = new(
                 brandsDto,
                 brandsResult.Total,
-                pagination.Page,
-                pagination.PageSize,
-                pagination.Page * pagination.PageSize < brandsResult.Total
+                brandsResult.Page,
+                brandsResult.PageSize,
+                brandsResult.HasMore
             );
 
             return Ok(result);

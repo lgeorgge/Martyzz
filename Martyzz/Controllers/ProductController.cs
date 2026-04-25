@@ -1,5 +1,6 @@
 using AutoMapper;
 using Martyzz.Domain.Common;
+using Martyzz.Domain.Common.OrderBy;
 using Martyzz.Domain.Models;
 using Martyzz.Domain.Repo.Interfaces;
 using Martyzz.Domain.Specifications.ProductSpecs;
@@ -16,27 +17,24 @@ namespace Martyzz.Controllers
         private readonly IMapper _mapper = mapper;
 
         [HttpGet]
-        public async Task<ActionResult<GetAllResult<Product>>> GetProducts(int? page, int? pageSize)
+        public async Task<ActionResult<GetAllResult<Product>>> GetProducts(
+            int? page,
+            int? pageSize,
+            ProductSortBy? sortBy
+        )
         {
-            var pagination = new Pagination
-            {
-                Page = (page < 1 || page == null) ? 1 : page.Value,
-                PageSize =
-                    (pageSize < 1 || pageSize == null || pageSize > 100) ? 10 : pageSize.Value,
-            };
+            var specs = new ProductSpecs(null, sortBy, page, pageSize);
 
-            var specs = new ProductSpecs(null);
-
-            var products = await _repo.GetAll(pagination: pagination, specs);
+            var products = await _repo.GetAll(specs);
 
             var productDtos = _mapper.Map<List<ProductDto>>(products.Items);
             return Ok(
                 new GetAllResult<ProductDto>(
                     Items: productDtos,
                     Total: products.Total,
-                    Page: pagination.Page,
-                    PageSize: pagination.PageSize,
-                    HasMore: pagination.Page * pagination.PageSize < products.Total
+                    Page: products.Page,
+                    PageSize: products.PageSize,
+                    HasMore: products.HasMore
                 )
             );
         }

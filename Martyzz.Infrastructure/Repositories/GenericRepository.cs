@@ -17,21 +17,22 @@ public class GenericRepository<T> : IGenericRepository<T>
         _context = storeDbContext;
     }
 
-    public async Task<PagedResult<T>> GetAll(Pagination pagination, ISpecifications<T>? spec)
+    public async Task<PaginatedResult<T>> GetAll(ISpecifications<T>? spec)
     {
-        var page = pagination.Page;
-        var pageSize = pagination.PageSize;
-
         var items = await SpecificationEvaluator<T>
             .GetQuery(_context.Set<T>().AsQueryable(), spec)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
             .ToListAsync();
         var count = await SpecificationEvaluator<T>
-            .GetQuery(_context.Set<T>().AsQueryable(), spec)
+            .GetQuery(_context.Set<T>().AsQueryable(), spec, true)
             .CountAsync();
 
-        return new PagedResult<T>(items, count);
+        return new PaginatedResult<T>(
+            items,
+            count,
+            spec?.Page ?? 1,
+            spec?.PageSize ?? 10,
+            (spec?.Page ?? 1) * (spec?.PageSize ?? 10) < count
+        );
     }
 
     public async Task<T?> Get(ISpecifications<T>? spec)

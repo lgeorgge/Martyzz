@@ -19,22 +19,17 @@ namespace Martyzz.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Category>>> GetCategories(int? page, int? pageSize)
         {
-            page = (page < 1 || page == null) ? 1 : page;
-            pageSize = (pageSize < 1 || pageSize == null || pageSize > 100) ? 10 : pageSize;
-
-            Pagination pagination = new(page.Value, pageSize.Value);
-
-            ISpecifications<Category> specs = new CategorySpecs(null);
-            var categoriesResult = await _repo.GetAll(pagination, specs);
+            ISpecifications<Category> specs = new CategorySpecs(null, page, pageSize);
+            var categoriesResult = await _repo.GetAll(specs);
 
             var categoriesDto = _mapper.Map<List<CategoryDto>>(categoriesResult.Items);
 
             GetAllResult<CategoryDto> result = new(
                 categoriesDto,
                 categoriesResult.Total,
-                pagination.Page,
-                pagination.PageSize,
-                pagination.Page * pagination.PageSize < categoriesResult.Total
+                categoriesResult.Page,
+                categoriesResult.PageSize,
+                categoriesResult.HasMore
             );
 
             return Ok(result);
