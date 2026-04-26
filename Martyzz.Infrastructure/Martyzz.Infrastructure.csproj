@@ -23,8 +23,4 @@
     <ProjectReference Include="..\Martyzz.Domain\Martyzz.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>

@@ -7,9 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Repo.Interfaces\" />
     <Folder Include="Specifications\BrandSpecs\" />
     <Folder Include="Specifications\CategorySpecs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StackExchange.Redis" Version="2.12.14" />
   </ItemGroup>
 
 </Project>
